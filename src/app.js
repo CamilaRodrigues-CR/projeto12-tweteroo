@@ -44,7 +44,8 @@ app.get('/tweets', (req, res) => {
             tweet: req.body.tweet
         }
     ]
-   res.send(tweetsList);
+    const limitList = tweetsList.slice(-10);
+   res.send(limitList);
 } );
 
 
