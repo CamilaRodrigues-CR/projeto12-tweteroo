@@ -37,6 +37,7 @@ app.post('/tweets', (req, res) => {
 
 app.get('/tweets', (req, res) => {
     const {avatar} = req.params;
+    if (!tweets) {
     const tweetsList = [ ...tweets, 
         {
             username: req.body.username,
@@ -46,6 +47,9 @@ app.get('/tweets', (req, res) => {
     ]
     const limitList = tweetsList.slice(-10);
    res.send(limitList);
+    } else{
+         res.send(tweets);
+    }
 } );
 
 
