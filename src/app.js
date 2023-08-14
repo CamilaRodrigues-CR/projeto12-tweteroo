@@ -10,8 +10,8 @@ const tweets = [];
 
 app.post('/sign-up', (req, res) => {
     const usuario = {
-        username: req.body.username, 
-        avatar: req.body.avatar 
+        username: req.body.username,
+        avatar: req.body.avatar
     }
     usuarios.push(usuario);
     res.send('OK');
@@ -19,9 +19,9 @@ app.post('/sign-up', (req, res) => {
 });
 
 app.post('/tweets', (req, res) => {
-    const {username} = req.body;
+    const { username } = req.body;
     const user = usuarios.some(usuario => usuario.username === username)
-    if (user){
+    if (user) {
         const tweet = {
             username: req.body.username,
             tweet: req.body.tweet
@@ -32,25 +32,29 @@ app.post('/tweets', (req, res) => {
         res.send('UNAUTHORIZED')
     }
 
-   
+
 });
 
 app.get('/tweets', (req, res) => {
-    const {avatar} = req.params;
-    if (!tweets) {
-    const tweetsList = [ ...tweets, 
-        {
-            username: req.body.username,
-            avatar: avatar,
-            tweet: req.body.tweet
-        }
-    ]
-    const limitList = tweetsList.slice(-10);
-   res.send(limitList);
-    } else{
-         res.send(tweets);
+     const avatarTweets = tweets.map ((t) => {
+        const user = usuarios.find((user) => user.username === t.username);
+        return {...t , avatar : user ? user.avatar : ""};
+     })
+
+    
+     if (tweets) {
+        const tweetsList = avatarTweets.slice(-10)
+        res.send(tweetsList);
+        
+
+    } else {
+        
+            res.send(tweets);
+            console.log('limitList', limitList)
+       
     }
-} );
+   
+});
 
 
 app.listen(5000, () => console.log("Running server on port 5000"));
